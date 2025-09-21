@@ -1,4 +1,5 @@
 using Magic_VillaAPI.Logging;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 //using Serilog;
 
@@ -8,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Log.Logger = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.File("log/villaLogs.txt", rollingInterval: RollingInterval.Day).CreateLogger();
 //builder.Host.UseSerilog();
+builder.Services.AddDbContext<Magic_VillaAPI.Data.ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 builder.Services.AddControllers(option => { option.ReturnHttpNotAcceptable = true ; }).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
